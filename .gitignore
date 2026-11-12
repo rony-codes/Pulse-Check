@@ -1,0 +1,19 @@
+
+# Environment variables and secrets
+.env
+.env.local
+
+# Generated reports
+reports/*
+!reports/.gitkeep
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
