@@ -1,24 +1,13 @@
 {
-  "name": "pulse-check",
+  "name": "pulsecheck",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "private": true,
+  "description": "A reusable API performance testing framework built with k6",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rony-codes/Pulse-Check.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/rony-codes/Pulse-Check/issues"
-  },
-  "homepage": "https://github.com/rony-codes/Pulse-Check#readme"
+    "test:smoke": "k6 run tests/smoke-test.js",
+    "test:load": "k6 run tests/load-test.js",
+    "test:stress": "k6 run tests/stress-test.js",
+    "test:spike": "k6 run tests/spike-test.js",
+    "test:soak": "k6 run tests/soak-test.js"
+  }
 }
