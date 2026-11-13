@@ -2,6 +2,7 @@
 import { check } from 'k6';
 import { currentEnvironment } from '../config/environments.js';
 import { get, post, put, patch, del } from '../utils/requests.js';
+import { generateReport } from '../utils/reporting.js';
 
 export const options = {
     stages: [
@@ -65,4 +66,8 @@ export default function () {
         'Product is marked deleted': (r) =>
             r.json().isDeleted === true
     });
+}
+
+export function handleSummary(data) {
+    return generateReport(data, 'api-workflow-test');
 }

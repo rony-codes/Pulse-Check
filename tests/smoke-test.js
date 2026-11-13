@@ -3,6 +3,8 @@ import { SharedArray } from 'k6/data';
 import { currentEnvironment } from '../config/environments.js';
 import { get } from '../utils/requests.js';
 import { validateStatus, validateJson } from '../utils/checks.js';
+import { generateReport } from '../utils/reporting.js';
+
 
 const testData = new SharedArray('test data', function () {
     return [JSON.parse(open('../data/test-data.json'))];
@@ -28,4 +30,8 @@ export default function () {
         'Product ID is correct': (r) => r.json().id === productId,
         'Product title exists': (r) => r.json().title !== ''
     });
+}
+
+export function handleSummary(data) {
+    return generateReport(data, 'smoke-test');
 }

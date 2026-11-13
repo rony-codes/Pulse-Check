@@ -2,6 +2,7 @@
 import { check } from 'k6';
 import { currentEnvironment } from '../config/environments.js';
 import { get } from '../utils/requests.js';
+import { generateReport } from '../utils/reporting.js';
 
 export const options = {
     stages: [
@@ -21,4 +22,8 @@ export default function () {
         'Products are returned': (r) =>
             r.json().products.length > 0
     });
+}
+
+export function handleSummary(data) {
+    return generateReport(data, 'soak-test');
 }
