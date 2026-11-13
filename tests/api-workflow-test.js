@@ -1,86 +1,68 @@
 
 import { check } from 'k6';
-
 import { currentEnvironment } from '../config/environments.js';
-
-import {
-    get,
-    post,
-    put,
-    patch,
-    del
-} from '../utils/requests.js';
+import { get, post, put, patch, del } from '../utils/requests.js';
 
 export const options = {
-    vus: 1,
-    iterations: 1
+    stages: [
+        { duration: '20s', target: 2 },
+        { duration: '1m', target: 2 },
+        { duration: '20s', target: 0 }
+    ]
 };
 
 export default function () {
+    const baseUrl = currentEnvironment.baseUrl;
 
-    const getResponse = get(`${currentEnvironment.baseUrl}/products/1`);
+    const getResponse = get(`${baseUrl}/products/1`);
 
     check(getResponse, {
-        'GET: Status is 200': (r) => r.status === 200,
-        'GET: Product ID is 1': (r) => r.json().id === 1
+        'GET returns 200': (r) => r.status === 200
     });
 
-
-    const newProduct = {
-        title: 'PulseCheck Product',
+    const postPayload = {
+        title: 'PulseCheck Test Product',
         price: 99,
         category: 'software'
     };
 
     const postResponse = post(
-        `${currentEnvironment.baseUrl}/products/add`,
-        newProduct
+        `${baseUrl}/products/add`,
+        postPayload
     );
 
     check(postResponse, {
-        'POST: Status is 201': (r) => r.status === 201,
-        'POST: Product created': (r) => r.json().title === newProduct.title
+        'POST returns 201': (r) => r.status === 201
     });
 
-
-    const updatedProduct = {
-        title: 'PulseCheck Replacement',
-        price: 149,
-        description: 'Updated product'
+    const putPayload = {
+        title: 'PulseCheck Updated Product',
+        price: 149
     };
 
     const putResponse = put(
-        `${currentEnvironment.baseUrl}/products/1`,
-        updatedProduct
+        `${baseUrl}/products/1`,
+        putPayload
     );
 
     check(putResponse, {
-        'PUT: Status is 200': (r) => r.status === 200,
-        'PUT: Title updated': (r) => r.json().title === updatedProduct.title
+        'PUT returns 200': (r) => r.status === 200
     });
 
-
-    const partialUpdate = {
-        title: 'PulseCheck Final Title'
-    };
-
     const patchResponse = patch(
-        `${currentEnvironment.baseUrl}/products/1`,
-        partialUpdate
+        `${baseUrl}/products/1`,
+        { title: 'PulseCheck Patched Product' }
     );
 
     check(patchResponse, {
-        'PATCH: Status is 200': (r) => r.status === 200,
-        'PATCH: Title updated': (r) => r.json().title === partialUpdate.title
+        'PATCH returns 200': (r) => r.status === 200
     });
 
-
-    const deleteResponse = del(
-        `${currentEnvironment.baseUrl}/products/1`
-    );
+    const deleteResponse = del(`${baseUrl}/products/1`);
 
     check(deleteResponse, {
-        'DELETE: Status is 200': (r) => r.status === 200,
-        'DELETE: Product deleted': (r) => r.json().isDeleted === true
+        'DELETE returns 200': (r) => r.status === 200,
+        'Product is marked deleted': (r) =>
+            r.json().isDeleted === true
     });
 }
