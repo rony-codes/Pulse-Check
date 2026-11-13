@@ -8,6 +8,13 @@
     "test:load": "k6 run tests/load-test.js",
     "test:stress": "k6 run tests/stress-test.js",
     "test:spike": "k6 run tests/spike-test.js",
-    "test:soak": "k6 run tests/soak-test.js"
+    "test:soak": "k6 run tests/soak-test.js",
+    "test:post": "k6 run tests/post-test.js",
+    "test:put": "k6 run tests/put-test.js",
+    "test:patch": "k6 run tests/patch-test.js",
+    "test:delete": "k6 run tests/delete-test.js",
+    "test:workflow": "k6 run tests/api-workflow-test.js",
+    "test:auth": "k6 run tests/auth-test.js",
+    "test:search": "k6 run tests/search-test.js"
   }
 }
