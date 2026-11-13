@@ -24,8 +24,17 @@ jobs:
       - name: Setup k6
         uses: grafana/setup-k6-action@v1
 
+      - name: Prepare Reports Directory
+        run: mkdir -p reports
+
       - name: Run Smoke Test
         run: k6 run tests/smoke-test.js
+
+      - name: Verify Generated Reports
+        if: always()
+        run: |
+          echo "Checking reports directory..."
+          ls -la reports/
 
       - name: Upload Test Reports
         if: always()
